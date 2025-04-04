@@ -1,0 +1,148 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage{policyengine}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath} % Added for math mode if needed
+
+% --- Discussant Presentation Details ---
+\title{Discussion: Expanding the Frontier of Economic Statistics Using Big Data}
+\subtitle{A Case Study of Regional Employment}
+\author[Max Ghenis]{Discussant: Max Ghenis} % Updated Name
+\institute{PolicyEngine} % Updated Affiliation
+\date{Society of Government Economists\\April 4, 2025} % Adjust date if needed
+
+% --- Original Paper Authors (Optional, good practice for discussant slides) ---
+\newcommand{\paperauthors}{Abe Dunn (BEA), Eric English (Census), Kyle Hood (BEA), Lowell Mason (BLS), Brian Quistorff (BEA)}
+% You can add this to the title page or intro slide if desired.
+
+\begin{document}
+
+% --- Title Frame ---
+\begin{frame}
+    \titlepage
+    \vspace{0.5cm}
+    \tiny{\textit{Paper by: Abe Dunn (BEA), Eric English (Census), Kyle Hood (BEA), Lowell Mason (BLS), Brian Quistorff (BEA)}}
+\end{frame}
+
+% --- Summary Frame ---
+\begin{frame}{Summary of the Paper}
+    \begin{itemize}
+        \item \textbf{Objective:} Evaluate using third-party payroll data ("Big Data") to enhance official regional employment statistics (State/County-by-Industry).
+        \item \textbf{Core Problem:} Leveraging new data sources amidst declining survey response rates, balancing timeliness/granularity vs. accuracy.
+        \item \textbf{Framework:}
+        \begin{itemize}
+            \item Production Possibility Frontier (Accuracy vs. Granularity/Timeliness).
+            \item Using existing official statistics' revision errors (CES vs. QCEW) as a benchmark/tolerance level.
+        \end{itemize}
+        \item \textbf{Methodology:} Linear models predicting QCEW growth using CES \& payroll data features; out-of-sample validation (Rolling \& K-Fold).
+        \item \textbf{Key Findings:}
+        \begin{itemize}
+            \item Payroll data improves state-level accuracy modestly (11-19\% MAE reduction in areas).
+            \item New county-level estimates generated meet extrapolated accuracy standards.
+            \item Demonstrates value for timeliness/targeting in COVID application.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% --- Strengths Frame (Revised) ---
+\begin{frame}{Strengths of the Paper}
+    \begin{itemize}
+        \item \textbf{Timely \& Important:} Addresses a critical challenge for statistical agencies (integrating alternative data).
+        \item \textbf{Innovative Framework:}
+        \begin{itemize}
+            % Removed PPF insightful per feedback
+            \item Systematic use of existing revision errors ("error tolerance") as a benchmark is clever and practical.
+            \item Novel statistical test for evaluating new granular series against the existing frontier.
+        \end{itemize}
+        \item \textbf{Methodological Rigor:}
+        \begin{itemize}
+            \item Careful construction of payroll series (continuing sample).
+            \item Use of appropriate benchmarks (QCEW).
+            \item Robust cross-validation techniques (Rolling, K-Fold).
+        \end{itemize}
+        \item \textbf{Practical Relevance:} COVID-19 application demonstrates potential real-world value for policy.
+    \end{itemize}
+\end{frame}
+
+% --- Discussion Frame 1: Predictive Frame & ML Intro ---
+\begin{frame}{Discussion: Framing as QCEW Prediction}
+    \begin{itemize}
+        \item \textbf{Successful Frame:} Paper effectively uses the lens of "how can we best predict QCEW?" to integrate payroll data with CES.
+        \item \textbf{Machine Learning Explored:}
+            \begin{itemize}
+                \item Paper briefly compares linear models to Random Forest (RF).
+                \item Finds mixed results for RF: Good performance in cross-fold validation, but poor in rolling validation (especially during COVID).
+                \item Hypothesis: RF struggles with extrapolation for unprecedented events compared to linear models in this test.
+            \end{itemize}
+        \item \textbf{Question:} Is this performance inherent to RF, or partly due to the limited features used in the test?
+    \end{itemize}
+\end{frame}
+
+% --- Discussion Frame 2: Expanding Predictors for ML ---
+\begin{frame}{Discussion: Enhancing Prediction with More Data?}
+    \begin{itemize}
+        \item \textbf{ML thrives on predictors:} Could ML models (RF, Gradient Boosting, etc.) perform better with a richer feature set?
+        \item \textbf{Leveraging Payroll Data Further:}
+            \begin{itemize}
+                \item Include features from \textit{both} "Continuing Units" and "Full Data" samples to capture stable trends \textit{and} entry/exit dynamics?
+                \item More detailed payroll characteristics (firm size mix in sample, data lags, etc.)?
+            \end{itemize}
+        \item \textbf{Leveraging CES Data Further:}
+            \begin{itemize}
+                \item More historical CES data? Sectoral trends?
+            \end{itemize}
+        \item \textbf{Other Data Sources:}
+            \begin{itemize}
+                 \item Incorporate related signals? (E.g., relevant CPS employment measures, spatial/neighboring area trends). ML can often effectively sift through many predictors.
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% --- Discussion Frame 3: New Measures & Evaluation Criteria ---
+\begin{frame}{Discussion: ML Enabling New Measures \& Metrics}
+    \begin{itemize}
+        \item \textbf{Beyond Point Estimates - Prediction Intervals:}
+            \begin{itemize}
+                \item Suggestion: Use Quantile Regression Forests (QRF) to predict the \textit{distribution} of potential QCEW outcomes.
+                \item QRF PIs capture uncertainty relative to the QCEW benchmark (sampling, non-sampling, model error combined).
+                \item Complements official CES CIs (which focus on initial sampling error).
+            \end{itemize}
+        \item \textbf{Beyond MAE - Heterogeneity \& Constraints:}
+             \begin{itemize}
+                \item Paper focuses on average accuracy (MAE).
+                \item Are there institutional needs to consider other metrics? E.g., minimizing instances where the combined model is *worse* than raw CES, even if MAE improves? (Loss aversion to increased error in specific cases).
+             \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% --- Discussion Frame 4: Implications of Predictive Frame ---
+\begin{frame}{Discussion: Implications of the Predictive Frame}
+    \begin{itemize}
+        \item \textbf{Viewing CES as QCEW Predictor:} If a primary goal of timely CES estimates is to predict the eventual QCEW benchmark...
+        \item \textbf{...What does this imply for optimizing CES itself?}
+            \begin{itemize}
+                \item \textbf{Survey Weights:} Could CES sample weights be optimized differently if maximizing predictive accuracy for QCEW (perhaps conditional on payroll data) is an explicit goal alongside representation?
+                \item \textbf{Survey Design/Content:} Could survey questions be added or modified to gather information known to improve QCEW prediction accuracy?
+                \item Galvanizes thinking about the entire data production pipeline through a predictive lens.
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% --- Conclusion Frame ---
+\begin{frame}{Conclusion \& Future Directions}
+    \begin{itemize}
+        \item \textbf{Valuable Contribution:} Excellent paper demonstrating a framework and application for integrating alternative data, successfully expanding the "frontier".
+        \item \textbf{Key Theme:} Framing CES/Payroll as predictors of QCEW opens productive avenues for research and potentially operations.
+        \item \textbf{Future Directions Highlighted:}
+        \begin{itemize}
+            \item Deeper ML exploration (more features, incl. full & continuing payroll).
+            \item Quantifying prediction uncertainty (QRF for PIs).
+            \item Considering broader evaluation metrics (beyond MAE).
+            \item Exploring implications of predictive goals for CES survey design/weighting.
+        \end{itemize}
+        \item \textbf{Congratulations to the authors!}
+    \end{itemize}
+\end{frame}
+
+\end{document}
